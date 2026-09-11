@@ -9,9 +9,10 @@ const configuredSources: MarketSource[] = String(import.meta.env.PUBLIC_ARENA_MA
   .map((value) => value.trim().toUpperCase())
   .filter((value): value is 'SIMULATION' | 'SOLANA' | 'SOMNIA' => validSources.has(value))
 const marketSources: MarketSource[] = configuredSources.length ? configuredSources : ['SIMULATION']
-const arenaWatchUrl = 'https://solz.fun/watch/live/'
+const arenaWatchUrl = 'https://solz.fun/watch/live/agent-arena'
+const dreamDexApiUrl = String(import.meta.env.PUBLIC_DREAMDEX_GAME_API_URL ?? '').trim() || new URL('/api/dreamdex', Astro.url).toString()
 ---
 
 <SiteLayout title="COOLA · The agent arena" description="Watch Genesis agents compete. Predict the outcome, direct the action, and put your community in the arena.">
-  <HomeApp dreamDexApiUrl={String(import.meta.env.PUBLIC_DREAMDEX_GAME_API_URL ?? '').trim()} apiUrl={String(import.meta.env.PUBLIC_PREDICTION_API_URL ?? '').trim()} environmentId={String(import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ?? '').trim()} demoHref="/demo" liveHref={arenaWatchUrl} eventBasePath="/events" marketSources={marketSources} client:only="react" />
+  <HomeApp dreamDexApiUrl={dreamDexApiUrl} apiUrl={new URL('/api/prediction', Astro.url).toString()} environmentId={String(import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ?? '').trim()} demoHref="/demo" liveHref={arenaWatchUrl} eventBasePath="/events" marketSources={marketSources} client:only="react" />
 </SiteLayout>

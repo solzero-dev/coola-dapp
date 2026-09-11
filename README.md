@@ -1,6 +1,6 @@
 # SOLZ Prediction Market
 
-Prediction-market frontend and execution services for SOLZ matches. The repository contains the React/Astro web app, its server routes, a standalone Bun prediction API, DreamDEX event-market integration, custom EVM event contracts, and a Solana Pinocchio program.
+Prediction-market frontend and execution services for SOLZ matches. The repository contains the React/Astro web app, its server routes, a standalone Bun prediction API, DreamDEX event-market integration, and custom EVM event contracts.
 
 ## Repository map
 
@@ -9,7 +9,6 @@ Prediction-market frontend and execution services for SOLZ matches. The reposito
 - `apps/chain-worker/` — chain submission and reconciliation worker.
 - `apps/dreamdex/` — DreamDEX game-event creation, faucet, inspection, and smoke tooling.
 - `contracts/evm/` — custom event execution contracts, ABIs, deployment data, and an isolated local-chain launcher.
-- `programs/prediction_market_pinocchio/` — Solana prediction-market program.
 - `packages/` — chain adapters, SDK, matching, telemetry, risk, and shared domain logic.
 
 DreamDEX and the custom EVM contracts are separate execution paths:
@@ -23,7 +22,6 @@ DreamDEX and the custom EVM contracts are separate execution paths:
 - Node.js 22.12 or newer (used by Solidity scripts).
 - A Dynamic-supported browser wallet for wallet interactions.
 - Optional: PostgreSQL for the built-in serverless DreamDEX route.
-- Optional: Rust and the Solana platform tools for the Solana build.
 
 Install dependencies:
 
@@ -59,7 +57,7 @@ cp .env.example .env
 | Variable | Purpose | Required |
 | --- | --- | --- |
 | `VITE_DYNAMIC_ENVIRONMENT_ID` | Dynamic wallet connection | Wallet flows only |
-| `PUBLIC_ARENA_MARKET_SOURCES` | Home sources such as `SIMULATION,SOLANA,SOMNIA` | No |
+| `PUBLIC_ARENA_MARKET_SOURCES` | Home sources such as `SIMULATION,SOMNIA` | No |
 | `DATABASE_URL` | PostgreSQL for the built-in `/api/dreamdex` route | Built-in DreamDEX writes |
 | `PVT_KEY` | DreamDEX sponsor wallet | DreamDEX writes |
 | `SOLZ_GAME_API_ORIGIN` | Authoritative SOLZ match/roster service | No; a hosted default exists |
@@ -170,7 +168,7 @@ It listens on `127.0.0.1:8788` and stores state in `.data/prediction.sqlite`. Wi
 
 Server-only configuration:
 
-- `PREDICTION_VENUES_FILE` — JSON array file for custom EVM/Solana venues.
+- `PREDICTION_VENUES_FILE` — JSON array file for custom EVM venues.
 - `PREDICTION_DREAMDEX_FILE` — JSON array file for public DreamDEX networks.
 - `PREDICTION_DATABASE_PATH` — SQLite path.
 - `PREDICTION_HOST` and `PREDICTION_PORT` — bind address and port.
@@ -202,14 +200,7 @@ Run EVM integration tests:
 bun run test:evm
 ```
 
-Build and test the Solana Pinocchio program:
-
-```sh
-bun run build:solana
-bun run test:solana:svm
-```
-
-The SBF commands require Rust and the Solana platform toolchain. Local-chain tests are not a security audit or public deployment.
+Local-chain tests are not a security audit or public deployment.
 
 ## Project validation
 

@@ -17,7 +17,7 @@ const profile = {
   address: address!,
 }
 
-const apiUrl = String(import.meta.env.PUBLIC_DREAMDEX_GAME_API_URL ?? '').trim() || String(import.meta.env.PUBLIC_PREDICTION_API_URL ?? '').trim()
+const apiUrl = new URL('/api/dreamdex', Astro.url).toString()
 const environmentId = String(import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ?? '').trim()
 ---
 <SiteLayout title="Profile · COOLA" description="Public prediction profile and positions by wallet address.">

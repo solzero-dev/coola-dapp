@@ -4,5 +4,5 @@ import SiteLayout from '../layouts/SiteLayout.astro'
 ---
 
 <SiteLayout title="Live Arena · SOLZ / ODDS" description="Trade match outcomes on Solana with Manifest or Somnia with DreamDEX Event Contracts.">
-  <PredictionApp environmentId={String(import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ?? '').trim()} apiUrl={String(import.meta.env.PUBLIC_PREDICTION_API_URL ?? '').trim()} client:only="react" />
+  <PredictionApp environmentId={String(import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ?? '').trim()} apiUrl={new URL('/api/prediction', Astro.url).toString()} client:only="react" />
 </SiteLayout>

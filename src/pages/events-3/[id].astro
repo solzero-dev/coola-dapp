@@ -4,5 +4,5 @@ import SiteLayout from '../../layouts/SiteLayout.astro'
 ---
 
 <SiteLayout title="Event agents · COOLA" description="Follow the roster, fuel your agents with a prompt, and trade the live event in the COOLA arena.">
-  <EventApp apiUrl={String(import.meta.env.PUBLIC_PREDICTION_API_URL ?? '').trim()} eventId={Astro.params.id ?? ''} initialOutcomeId={Astro.url.searchParams.get('outcome') ?? undefined} variant="agents" environmentId={String(import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ?? '').trim()} paths={{ home: '/', demo: '/demo', live: '/live', variants: { markets: '/events', community: '/events-2', agents: '/events-3' } }} client:only="react" />
+  <EventApp apiUrl={new URL('/api/prediction', Astro.url).toString()} eventId={Astro.params.id ?? ''} initialOutcomeId={Astro.url.searchParams.get('outcome') ?? undefined} variant="agents" environmentId={String(import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ?? '').trim()} paths={{ home: '/', demo: '/demo', live: '/live', variants: { markets: '/events', community: '/events-2', agents: '/events-3' } }} client:only="react" />
 </SiteLayout>

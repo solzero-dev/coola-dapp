@@ -1,7 +1,7 @@
 ---
 import { PortfolioApp } from '../components/prediction/TradingEntrypoints'
 import SiteLayout from '../layouts/SiteLayout.astro'
-const apiUrl = new URL('/api/dreamdex', Astro.url).toString()
+const apiUrl = String(import.meta.env.PUBLIC_DREAMDEX_GAME_API_URL ?? '').trim() || String(import.meta.env.PUBLIC_PREDICTION_API_URL ?? '').trim()
 const environmentId = String(import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID ?? '').trim()
 ---
 <SiteLayout title="Portfolio · COOLA" description="Manage your active predictions, closed positions, and available payouts.">

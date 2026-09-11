@@ -1,18 +1,33 @@
 import type { APIRoute } from 'astro'
-import { proxyService, runtimeEnvironment } from '../../../server/upstream-proxy'
+import { ServerlessDreamDexDemo } from '../../../server/dreamdex-serverless'
+import { runtimeEnvironment } from '../../../server/upstream-proxy'
 
 export const prerender = false
 
-function handler(method: string): APIRoute {
-  return ({ request, params, locals }) => {
-    if (request.method !== method) return new Response('Method not allowed', { status: 405 })
-    return proxyService(request, params.path, runtimeEnvironment(locals), 'DREAMDEX_GAME_API_ORIGIN', 'http://127.0.0.1:8789')
-  }
+function json(value: unknown, status = 200) {
+  return Response.json(value, { status, headers: { 'cache-control': 'no-store' } })
 }
 
-export const GET = handler('GET')
-export const POST = handler('POST')
-export const PUT = handler('PUT')
-export const PATCH = handler('PATCH')
-export const DELETE = handler('DELETE')
-export const OPTIONS = handler('OPTIONS')
+export const GET: APIRoute = async ({ params, locals }) => {
+  try {
+    const demo = await ServerlessDreamDexDemo.create(runtimeEnvironment(locals))
+    if (params.path === 'config') return json(await demo.config())
+    return json({ error: 'Not found' }, 404)
+  } catch (error) { return json({ error: error instanceof Error ? error.message : 'DreamDEX service unavailable.' }, 503) }
+}
+
+export const POST: APIRoute = async ({ request, params, locals }) => {
+  try {
+    const demo = await ServerlessDreamDexDemo.create(runtimeEnvironment(locals))
+    const input = await request.json() as { eventId?: unknown; agentId?: unknown; address?: unknown }
+    if (params.path === 'dreamdex/game-markets') {
+      if (typeof input.eventId !== 'string' || typeof input.agentId !== 'string') return json({ error: 'Select a game and agent.' }, 400)
+      return json(await demo.createMarket(input.eventId, input.agentId))
+    }
+    if (params.path === 'dreamdex/faucet') {
+      if (typeof input.address !== 'string') return json({ error: 'Connect your Dynamic EVM wallet first.' }, 400)
+      return json(await demo.fund(input.address))
+    }
+    return json({ error: 'Not found' }, 404)
+  } catch (error) { return json({ error: error instanceof Error ? error.message : 'Creation failed.' }, 409) }
+}

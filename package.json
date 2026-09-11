@@ -55,6 +55,7 @@
     "buffer": "6.0.3",
     "colyseus.js": "^0.16.22",
     "lucide-react": "1.39.0",
+    "postgres": "3.4.8",
     "process": "0.11.10",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

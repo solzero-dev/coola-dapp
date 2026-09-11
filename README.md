@@ -30,9 +30,9 @@ bun install
 bun install --cwd contracts/evm
 ```
 
-## Quick start: app and built-in server routes
+## Quick start: homepage and profile
 
-The simulation UI needs no chain credentials:
+Start the web app and its built-in server routes:
 
 ```sh
 bun run dev
@@ -40,11 +40,8 @@ bun run dev
 
 Open:
 
-- [http://127.0.0.1:4321/](http://127.0.0.1:4321/) — SOLZ match and market home.
-- [http://127.0.0.1:4321/demo](http://127.0.0.1:4321/demo) — fully local simulated arena.
-- [http://127.0.0.1:4321/live](http://127.0.0.1:4321/live) — configured live prediction venues.
-- `/events/:id`, `/events-2/:id`, and `/events-3/:id` — market, community, and agent event views.
-- `/profile` — connected-wallet DreamDEX positions.
+- [http://127.0.0.1:4321/](http://127.0.0.1:4321/) — SOLZ matches and DreamDEX markets.
+- [http://127.0.0.1:4321/profile](http://127.0.0.1:4321/profile) — connected-wallet DreamDEX orders and positions.
 
 `bun run dev` starts Astro and the endpoint bindings in `src/pages/api/`. It does **not** automatically start the stateful prediction API on port `8788`; use an integrated mode below when you need execution.
 
@@ -95,7 +92,7 @@ bun run dev
 
 Replace `prediction-local-XXXXXX` with the generated directory printed by Terminal 1. `PREDICTION_VENUES_JSON` lets Astro's built-in `/api/prediction/config` route expose the safe browser configuration, while the remaining `/api/prediction/*` requests are proxied to the local API.
 
-Open [http://127.0.0.1:4321/live](http://127.0.0.1:4321/live). Keep both processes running. `Ctrl+C` stops the launcher; its chain is ephemeral and all balances are test funds.
+Open [http://127.0.0.1:4321/](http://127.0.0.1:4321/) to browse the configured markets, then use [http://127.0.0.1:4321/profile](http://127.0.0.1:4321/profile) for wallet positions. Keep both processes running. `Ctrl+C` stops the launcher; its chain is ephemeral and all balances are test funds.
 
 To use different ports:
 
@@ -225,7 +222,7 @@ See `ARCHITECTURE.md` for detailed application and service boundaries.
 
 ## Hackathon links and evidence
 
-- **Live demo:** [solz.fun/demo](https://solz.fun/demo)
+- **Homepage:** [solz.fun](https://solz.fun/)
 - **Demo video:** Pending upload
 
 **Somnia Shannon testnet — deployed**

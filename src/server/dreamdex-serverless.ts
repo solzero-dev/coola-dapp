@@ -1,6 +1,5 @@
 import { createWalletClient, erc20Abi, getAddress, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import type postgres from 'postgres'
 import { dreamDexNetwork } from '../../packages/adapters/dreamdex/event-reader'
 import { DreamDexGameCreator, type GameQuestion } from '../../packages/adapters/dreamdex/game-creation'
 import { questionFromArena } from '../../packages/adapters/dreamdex/arena-question'

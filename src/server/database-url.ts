@@ -15,6 +15,37 @@ export function serverDatabase(runtime: RuntimeEnv) {
 
 export async function migrateServerDatabase(sql: ReturnType<typeof serverDatabase>) {
   await sql`
+    CREATE TABLE IF NOT EXISTS prediction_markets (
+      venue TEXT NOT NULL,
+      chain_id TEXT NOT NULL,
+      market_id TEXT NOT NULL,
+      match_id TEXT NOT NULL,
+      payload TEXT NOT NULL,
+      PRIMARY KEY (venue, chain_id, market_id)
+    )`
+  await sql`
+    CREATE TABLE IF NOT EXISTS prediction_matcher_states (
+      scope TEXT PRIMARY KEY,
+      version BIGINT NOT NULL DEFAULT 0,
+      payload TEXT NOT NULL
+    )`
+  await sql`
+    CREATE TABLE IF NOT EXISTS prediction_events (
+      sequence BIGSERIAL PRIMARY KEY,
+      topic TEXT NOT NULL,
+      event_type TEXT NOT NULL,
+      payload TEXT NOT NULL,
+      created_at BIGINT NOT NULL
+    )`
+  await sql`CREATE INDEX IF NOT EXISTS prediction_events_topic_sequence ON prediction_events(topic, sequence)`
+  await sql`
+    CREATE TABLE IF NOT EXISTS prediction_nonces (
+      scope TEXT NOT NULL,
+      nonce TEXT NOT NULL,
+      expires_at BIGINT NOT NULL,
+      PRIMARY KEY (scope, nonce)
+    )`
+  await sql`
     CREATE TABLE IF NOT EXISTS dreamdex_game_creations (
       id TEXT PRIMARY KEY,
       game TEXT NOT NULL,

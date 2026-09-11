@@ -4,9 +4,10 @@ import type { SignedOrder } from '../prediction-core/types'
 import { PredictionError, parseSignedOrder, validateOrder } from '../prediction-core/validation'
 import { HttpPredictionVenue } from './HttpPredictionVenue'
 import { parsePredictionResponse } from './wire'
+import { apiUrl } from './api-url'
 
 export async function getPredictionConfig(baseUrl: string, signal?: AbortSignal): Promise<PredictionPublicConfig> {
-  const response = await fetch(new URL('/config', baseUrl), { signal: signal ?? AbortSignal.timeout(10_000) })
+  const response = await fetch(apiUrl(baseUrl, '/config'), { signal: signal ?? AbortSignal.timeout(10_000) })
   if (!response.ok) throw new Error('Prediction service is unavailable.')
   const value = await response.json() as PredictionPublicConfig
   if (!Array.isArray(value.venues) || typeof value.audience !== 'string') throw new Error('Prediction service returned invalid configuration.')

@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { useState } from 'react'
+import { apiUrl as apiEndpoint } from '../../../packages/sdk/api-url'
 
 type Props = { apiUrl: string; eventId?: string; agentId?: string; onOpened: () => void }
 
@@ -12,7 +13,7 @@ export function OpenDreamDexMarket({ apiUrl, eventId, agentId, onOpened }: Props
     if (busy) return
     setBusy(true); setMessage('Opening the DreamDEX event contract…')
     try {
-      const response = await fetch(new URL('/dreamdex/game-markets', apiUrl), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ eventId, agentId }) })
+      const response = await fetch(apiEndpoint(apiUrl, '/dreamdex/game-markets'), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ eventId, agentId }) })
       const result = await response.json()
       if (!response.ok || !result.market?.marketId) throw Error(result.error ?? 'Market creation did not complete.')
       setMessage('Event contract confirmed. Loading the market…')

@@ -5,6 +5,7 @@ import { parseSignedOrder, PredictionError, validateMarket, validateOrder } from
 import { proofHeaders, requestAuthMessage } from './auth'
 import { parsePredictionResponse } from './wire'
 import type { PortfolioPosition } from '../prediction-core/market-data'
+import { apiUrl } from './api-url'
 
 export interface VenueClientOptions {
   baseUrl: string
@@ -39,7 +40,7 @@ export class HttpPredictionVenue implements PredictionVenue {
   currentTime(): number { return this.options.now?.() ?? (this.serverClock ? Math.floor(this.serverClock.timestamp + performance.now() - this.serverClock.observed) : Date.now()) }
 
   protected async request<T>(path: string, method = 'GET', value?: unknown, authorize = false): Promise<T> {
-    const url = new URL(path, this.options.baseUrl)
+    const url = apiUrl(this.options.baseUrl, path)
     url.searchParams.set('venue', this.venue)
     url.searchParams.set('chainId', this.chainId)
     const body = value === undefined ? '' : stringify(value)

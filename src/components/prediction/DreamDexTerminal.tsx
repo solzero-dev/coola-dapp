@@ -10,6 +10,7 @@ import {
   orderTerms,
 } from "../../../packages/adapters/dreamdex/browser";
 import { eventBinding } from "../../../packages/adapters/dreamdex/config";
+import { apiUrl as apiEndpoint } from '../../../packages/sdk/api-url';
 import { dreamDexNetwork } from "../../../packages/adapters/dreamdex/event-reader";
 import { ConfirmedPriceChart } from "./ConfirmedPriceChart";
 import { formatUnitsExact, parseUnitsExact, priceLabel } from "./amounts";
@@ -120,7 +121,7 @@ function OpenGameQuestion({ apiUrl, eventId, agentId, onCreated }: { apiUrl: str
     if (pending.current) return;
     pending.current = true; setBusy(true); setMessage('Opening this game question on Shannon…');
     try {
-      const response = await fetch(new URL('/dreamdex/game-markets', apiUrl), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ eventId, agentId }) });
+      const response = await fetch(apiEndpoint(apiUrl, '/dreamdex/game-markets'), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ eventId, agentId }) });
       const result = await response.json();
       if (!response.ok) throw Error(result.error ?? 'Creation did not complete.');
       if (result.market?.eventId !== eventId || result.market?.subjectId !== agentId) throw Error('The confirmed question does not match this selection.');
@@ -555,7 +556,7 @@ function DreamEvent({
           )}
           <h3>Wallet balances</h3>
           {config.chainId === '50312' && config.demoCreation && creationApiUrl && <button disabled={!wallet || busy} onClick={() => void run(async () => {
-            const response = await fetch(new URL('/dreamdex/faucet', creationApiUrl), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ address: wallet!.owner }) });
+            const response = await fetch(apiEndpoint(creationApiUrl, '/dreamdex/faucet'), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ address: wallet!.owner }) });
             const result = await response.json(); if (!response.ok) throw Error(result.error ?? 'Test funding unavailable.'); return result.message;
           })}>Get demo test tokens & gas</button>}
           <dl className="pt-totals">
